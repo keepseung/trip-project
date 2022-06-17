@@ -15,12 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class TripServiceImpl implements TripService{
+public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final UserService userService;
     private final CityRepository cityRepository;
@@ -35,34 +36,36 @@ public class TripServiceImpl implements TripService{
 
         // 이미 같은 사용자가 등록한 도시 여행이 있는 경우
         Optional<Trip> optionalTrip = tripRepository.findByUserAndCity(user, city);
-        if (optionalTrip.isPresent()){
+        if (optionalTrip.isPresent()) {
             throw new BadRequestException("alreadyCityTrip");
         }
 
         // 시작 날짜가 종료 날짜보다 큰 경우 예외 발생
-        if (createTripDto.getStartDate().isAfter(createTripDto.getEndDate())){
+        if (createTripDto.getStartDate().isAfter(createTripDto.getEndDate())) {
             throw new BadRequestException("tripStartOrEndDateWrong");
         }
-//        if ((createTripDto.getStartDate().isBefore(now) || createTripDto.getStartDate().isEqual(now))
-//         && (createTripDto.getEndDate().isAfter(now) || createTripDto.getEndDate().isEqual(now))){
 
-            Trip trip = tripRepository.save(Trip.builder()
-                    .startDate(createTripDto.getStartDate())
-                    .endDate(createTripDto.getEndDate())
-                    .user(user)
-                    .city(city)
-                    .build());
-            TripDto tripDto = modelMapper.map(trip, TripDto.class);
-            CityDto cityDto = CityDto.builder()
-                    .id(trip.getCity().getId())
-                    .name(trip.getCity().getName())
-                    .trip(tripDto)
-                    .build();
 
-            return cityDto;
-//        }else{
-//            throw new IllegalArgumentException("tripStartOrEndDateWrong");
-//        }
+        LocalDate now = LocalDate.now();
+        if (now.isAfter(createTripDto.getStartDate()) ||
+                now.isAfter(createTripDto.getEndDate())) {
+            throw new BadRequestException("tripStartOrEndDateWrong");
+        }
+
+        Trip trip = tripRepository.save(Trip.builder()
+                .startDate(createTripDto.getStartDate())
+                .endDate(createTripDto.getEndDate())
+                .user(user)
+                .city(city)
+                .build());
+        TripDto tripDto = modelMapper.map(trip, TripDto.class);
+        CityDto cityDto = CityDto.builder()
+                .id(trip.getCity().getId())
+                .name(trip.getCity().getName())
+                .trip(tripDto)
+                .build();
+
+        return cityDto;
     }
 
     @Transactional(readOnly = true)
