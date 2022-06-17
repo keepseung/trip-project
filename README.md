@@ -13,7 +13,7 @@
 
 ### 유저
 - 사용자 회원가입 : Post /api/user/join
-- 사용자 로그인 : GET /api/user/login
+- 사용자 로그인 : Post /api/user/login
 
 ### 특이사항
 * 테이블 설계     
