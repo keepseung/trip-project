@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/triple_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: keep
+    password: 3F%vHc+sE_+!
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher # spring boot 2.6이상 버전에서 발생하는 스웨거 오류 해결
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
+server:
+  error:
+    include-stacktrace: never # 에러 응답값에 trace 내용 안보이게 함
+jwt:
+  secret-key: ThisisTripleProjectThisisTripleProjectThisisTripleProject
+  token-validation-in-seconds: 600000
