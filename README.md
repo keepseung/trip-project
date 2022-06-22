@@ -1,4 +1,4 @@
-# triple-project
+# trip-project
 여행갈 도시를 등록, 조회할 수 있는 서비스입니다.
 
 ## 기능
