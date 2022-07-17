@@ -1,4 +1,4 @@
-# triple-project
+# trip-project
 여행갈 도시를 등록, 조회할 수 있는 서비스입니다.
 
 ## 기능
@@ -13,7 +13,7 @@
 
 ### 유저
 - 사용자 회원가입 : Post /api/user/join
-- 사용자 로그인 : GET /api/user/login
+- 사용자 로그인 : Post /api/user/login
 
 ### 특이사항
 * 테이블 설계     
